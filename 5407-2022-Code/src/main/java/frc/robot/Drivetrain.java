@@ -71,7 +71,7 @@ right2 = new TalonFX(6);
  addChild("right2",right2);
  right2.setInverted(false);
 
-rightMotor = new MotorControllerGroup(right1, right2  );
+rightMotor = new MotorControllerGroup(right1, right2);
  addChild("Right Motor",rightMotor);
 
  motLeftDriveMotorA = new TalonFX(RobotMap.kCANId_RightDriveMotorA);

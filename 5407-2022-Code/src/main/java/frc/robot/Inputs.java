@@ -30,18 +30,17 @@ public class Inputs {
     public double dLeftDriveMotorPower = 0.0;
     public double dRightDriveMotorPower = 0.0;
 
-    public Inputs {
+    public Inputs() {
         joyTestController = new Joystick( RobotMap.kUSBPort_TestJoyStick );
 		gamepadDriver  = new XboxController(RobotMap.kUSBPort_DriverControl );
     	gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl );
     	zeroInputs();      				// this will init many variables
     }
-    
-    public void readValues {
-        public double joystickDegrees = Joystick.getDirectionDegrees();
-        if(joyTestController.getTop() == true){
-			iGyroRequest = Gyro.kGyro_Assist;
-		}
+    public double joystickDegrees = Joystick.getDirectionDegrees();
+    public void readValues() {
+        // if(joyTestController.getTop() == true){
+		// 	iGyroRequest = Gyro.kGyro_Assist;
+		// }
         //I need to read up on what this does
 
         if(joystickDegrees == 90){
