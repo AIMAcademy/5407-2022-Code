@@ -16,51 +16,52 @@ import edu.wpi.first.wpilibj.XboxController;
  * </pre>  
  */
 
-
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+//import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Inputs {
-    //Controller
+    // Controller
     private XboxController gamepadOperator = null;
-	private XboxController gamepadDriver = null;
-	public Joystick joyTestController = null;
+    // private XboxController gamepadDriver = null;
+    public Joystick joyTestController = null;
 
-    //Motor Power
+    // Motor Power
     public double dLeftDriveMotorPower = 0.0;
     public double dRightDriveMotorPower = 0.0;
 
     public Inputs() {
-        joyTestController = new Joystick( RobotMap.kUSBPort_TestJoyStick );
-		gamepadDriver  = new XboxController(RobotMap.kUSBPort_DriverControl );
-    	gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl );
-    	zeroInputs();      				// this will init many variables
+        joyTestController = new Joystick(RobotMap.kUSBPort_TestJoyStick);
+        // gamepadDriver = new XboxController(RobotMap.kUSBPort_DriverControl );
+        gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl);
+        zeroInputs(); // this will init many variables
     }
-    public double joystickDegrees = Joystick.getDirectionDegrees();
+
+    public double joystickDegrees = gamepadOperator.getPOV();
+
     public void readValues() {
         // if(joyTestController.getTop() == true){
-		// 	iGyroRequest = Gyro.kGyro_Assist;
-		// }
-        //I need to read up on what this does
+        // iGyroRequest = Gyro.kGyro_Assist;
+        // }
+        // I need to read up on what this does
 
-        if(joystickDegrees == 90){
+        if (joystickDegrees == 90) {
             dLeftDriveMotorPower = 0.5;
             dRightDriveMotorPower = 0.5;
-        }
-        else if(joystickDegrees == 180){
+        } else if (joystickDegrees == 180) {
             dLeftDriveMotorPower = -0.5;
             dRightDriveMotorPower = 0.5;
-        }
-        else if(joystickDegrees == 270){
+        } else if (joystickDegrees == 270) {
             dLeftDriveMotorPower = -0.5;
             dRightDriveMotorPower = -0.5;
-        }
-        else if(joystickDegrees == 360){
+        } else if (joystickDegrees == 360) {
             dLeftDriveMotorPower = 0.5;
             dRightDriveMotorPower = -0.5;
+        } else {
+            dLeftDriveMotorPower = 0;
+            dRightDriveMotorPower = 0;
         }
     }
 
-    public void zeroInputs() {					// reset all variables to stop or off state
+    public void zeroInputs() { // reset all variables to stop or off state
     }
 }
