@@ -19,6 +19,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  Inputs inputs = null;
+  RobotBase robotBase = null;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -26,9 +28,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    inputs        = new Inputs();			
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    robotBase = new RobotBase();
   }
 
   /**
@@ -78,7 +82,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    inputs.readValues();
+    robotBase.update();
+
+  }
+  
 
   /** This function is called once when the robot is disabled. */
   @Override

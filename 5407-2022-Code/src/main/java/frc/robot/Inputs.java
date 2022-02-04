@@ -26,8 +26,16 @@ public class Inputs {
     public Joystick joyTestController = null;
 
     // Motor Power
-    public double dLeftDriveMotorPower = 0.0;
-    public double dRightDriveMotorPower = 0.0;
+    public static double dDriverPower = 0.0;
+    public static double dDriverTurn = 0.0;
+    public boolean shooterButton = false;
+    public double motShooterPower = .8;
+
+    //What is the end game
+    public boolean bInEndGame  = false;
+    public boolean bSpeed = false;
+
+    private Drivetrain drivetrain = new Drivetrain();
 
     public Inputs() {
         joyTestController = new Joystick(RobotMap.kUSBPort_TestJoyStick);
@@ -36,30 +44,22 @@ public class Inputs {
         zeroInputs(); // this will init many variables
     }
 
-    public double joystickDegrees = gamepadOperator.getPOV();
-
     public void readValues() {
         // if(joyTestController.getTop() == true){
         // iGyroRequest = Gyro.kGyro_Assist;
         // }
         // I need to read up on what this does
+        shooterButton = gamepadOperator.getXButton();
+        dDriverPower = gamepadOperator.getRightX();
+        dDriverTurn = gamepadOperator.getLeftY();
 
-        if (joystickDegrees == 90) {
-            dLeftDriveMotorPower = 0.5;
-            dRightDriveMotorPower = 0.5;
-        } else if (joystickDegrees == 180) {
-            dLeftDriveMotorPower = -0.5;
-            dRightDriveMotorPower = 0.5;
-        } else if (joystickDegrees == 270) {
-            dLeftDriveMotorPower = -0.5;
-            dRightDriveMotorPower = -0.5;
-        } else if (joystickDegrees == 360) {
-            dLeftDriveMotorPower = 0.5;
-            dRightDriveMotorPower = -0.5;
-        } else {
-            dLeftDriveMotorPower = 0;
-            dRightDriveMotorPower = 0;
-        }
+        // else if (joystickDegrees == 270) {
+        // dLeftDriveMotorPower = -0.5;
+        // dRightDriveMotorPower = -0.5;
+        // } else if (joystickDegrees == 360) {
+        // dLeftDriveMotorPower = 0.5;
+        // dRightDriveMotorPower = -0.5;
+        // }
     }
 
     public void zeroInputs() { // reset all variables to stop or off state
