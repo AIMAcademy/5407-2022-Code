@@ -6,8 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 public class Shooter {
     
-    CANSparkMax motShooter = null; 
-    Inputs input = null;
+    static CANSparkMax motShooter = null; 
     
     public Shooter(){
 
@@ -17,8 +16,8 @@ public class Shooter {
     }
     public void update() {
 
-        if (input.shooterButton == true) {
-            motShooter.set(input.motShooterPower);
+        if (Inputs.shooterButton == true) {
+            motShooter.set(Inputs.motShooterPower);
         }
         else{
             motShooter.set(0.0);

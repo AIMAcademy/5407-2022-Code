@@ -22,14 +22,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Inputs {
     // Controller
     private XboxController gamepadOperator = null;
+    private XboxController gamepadOperator_2 = null;
     // private XboxController gamepadDriver = null;
     public Joystick joyTestController = null;
 
     // Motor Power
     public static double dDriverPower = 0.0;
     public static double dDriverTurn = 0.0;
-    public boolean shooterButton = false;
-    public double motShooterPower = .8;
+    public static boolean shooterButton = false;
+    public static double motShooterPower = -.74;
+    public boolean intakeButton = false;
+    public double motIntakePower = .8;
+    public static double motClimbPower = -.74;
+    public static boolean climbButton = false;
+    public static boolean robotBaseInverseButton = false;
 
     //What is the end game
     public boolean bInEndGame  = false;
@@ -41,6 +47,8 @@ public class Inputs {
         joyTestController = new Joystick(RobotMap.kUSBPort_TestJoyStick);
         // gamepadDriver = new XboxController(RobotMap.kUSBPort_DriverControl );
         gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl);
+        gamepadOperator_2 = new XboxController(RobotMap.kUSBPort_OperatorControl_2);
+
         zeroInputs(); // this will init many variables
     }
 
@@ -49,9 +57,12 @@ public class Inputs {
         // iGyroRequest = Gyro.kGyro_Assist;
         // }
         // I need to read up on what this does
-        shooterButton = gamepadOperator.getXButton();
-        dDriverPower = gamepadOperator.getRightX();
-        dDriverTurn = gamepadOperator.getLeftY();
+        shooterButton = gamepadOperator_2.getXButton();
+        intakeButton = gamepadOperator_2.getYButton();
+        climbButton = gamepadOperator_2.getAButton();
+        dDriverPower = gamepadOperator.getLeftY();
+        dDriverTurn = gamepadOperator.getRightX();
+        robotBaseInverseButton = gamepadOperator.getBButton();
 
         // else if (joystickDegrees == 270) {
         // dLeftDriveMotorPower = -0.5;
