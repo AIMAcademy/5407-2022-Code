@@ -12,12 +12,14 @@ class RobotMap {
 
     //Shooter motor
     public final static int kCANId_motShooter = 5;
-    public final static int kCanId_motIntake = 6;
     public final static int kCanId_motClimb = 7;
     //USB Ports
     public final static int kUSBPort_DriverControl = 0; 
     public final static int kUSBPort_OperatorControl = 1;
     public final static int kUSBPort_OperatorControl_2 = 2;
     public final static int kUSBPort_TestJoyStick = 3;
+
+    public static final int intake_0_PWN_0 = 0;
+    public static final int climb_PMW_2 = 2;
 
 }

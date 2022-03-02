@@ -18,6 +18,7 @@ public class RobotBase {
 	static TalonFX motLeftDriveMotorB = null;
 	static TalonFX motRightDriveMotorA = null;
 	static TalonFX motRightDriveMotorB = null;
+    boolean isNotPressed = true;
 
 
     public RobotBase() {
@@ -43,18 +44,28 @@ public class RobotBase {
     }
 
     public void update() {
-        dLeftDrivePower = applyPower.getWheelPower(ApplyPower.k_iLeftRearDrive, Inputs.dDriverPower,
+        double temp_drive_straight = 0;
+        temp_drive_straight = Inputs.dDriverPower * Math.abs(Inputs.dDriverPower * Inputs.dDriverPower * Inputs.dDriverPower);
+        
+        dLeftDrivePower = applyPower.getWheelPower(ApplyPower.k_iLeftRearDrive, temp_drive_straight,
                 Inputs.dDriverTurn);
-        dRightDrivePower = applyPower.getWheelPower(ApplyPower.k_iRightRearDrive,Inputs.dDriverPower,
+        dRightDrivePower = applyPower.getWheelPower(ApplyPower.k_iRightRearDrive,temp_drive_straight,
                 Inputs.dDriverTurn);
-        if (Inputs.robotBaseInverseButton == true){
-            inverseTimes +=1;
-        }
+        if (Inputs.robotBaseInverseButton == true && isNotPressed == true){
+            isNotPressed = false;
+            inverseTimes+=1;
+        } 
+        if (Inputs.robotBaseInverseButton == false){
+            isNotPressed = true;
+            
+        } 
+
         if (inverseTimes%2 == 0){  
             motLeftDriveMotorA.set(ControlMode.PercentOutput, dLeftDrivePower);
             motLeftDriveMotorB.set(ControlMode.PercentOutput, dLeftDrivePower);
             motRightDriveMotorA.set(ControlMode.PercentOutput, -dRightDrivePower);
             motRightDriveMotorB.set(ControlMode.PercentOutput, -dRightDrivePower);
+
         } else{
             motLeftDriveMotorA.set(ControlMode.PercentOutput, -dLeftDrivePower);
             motLeftDriveMotorB.set(ControlMode.PercentOutput, -dLeftDrivePower);

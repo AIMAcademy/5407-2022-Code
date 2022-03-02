@@ -32,10 +32,13 @@ public class Inputs {
     public static boolean shooterButton = false;
     public static double motShooterPower = -.74;
     public boolean intakeButton = false;
+    public boolean intakeButtonInverse = false;
     public double motIntakePower = .8;
     public static double motClimbPower = -.74;
-    public static boolean climbButton = false;
+    public static int climb_POV = 0;
     public static boolean robotBaseInverseButton = false;
+    public static boolean PneunamticsRightButton = false;
+    public static boolean PneunamticsLeftButton = false;
 
     //What is the end game
     public boolean bInEndGame  = false;
@@ -48,6 +51,7 @@ public class Inputs {
         // gamepadDriver = new XboxController(RobotMap.kUSBPort_DriverControl );
         gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl);
         gamepadOperator_2 = new XboxController(RobotMap.kUSBPort_OperatorControl_2);
+        
 
         zeroInputs(); // this will init many variables
     }
@@ -58,11 +62,19 @@ public class Inputs {
         // }
         // I need to read up on what this does
         shooterButton = gamepadOperator_2.getXButton();
-        intakeButton = gamepadOperator_2.getYButton();
-        climbButton = gamepadOperator_2.getAButton();
-        dDriverPower = gamepadOperator.getLeftY();
-        dDriverTurn = gamepadOperator.getRightX();
+        intakeButton = gamepadOperator_2.getAButton();
+        intakeButtonInverse = gamepadOperator_2.getBButton();
+        climb_POV = gamepadOperator.getPOV();
+        
+
+        dDriverPower = gamepadOperator.getRightY();
+        dDriverTurn = gamepadOperator.getLeftX(); 
         robotBaseInverseButton = gamepadOperator.getBButton();
+        PneunamticsLeftButton = gamepadOperator.getLeftBumper();
+        PneunamticsRightButton = gamepadOperator.getRightBumper(); 
+
+
+
 
         // else if (joystickDegrees == 270) {
         // dLeftDriveMotorPower = -0.5;

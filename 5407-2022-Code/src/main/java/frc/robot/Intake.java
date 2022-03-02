@@ -1,16 +1,16 @@
     package frc.robot;
-    import com.revrobotics.CANSparkMax;
-    import com.revrobotics.CANSparkMaxLowLevel;
+
+    import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 
     public class Intake {
 
-        CANSparkMax motIntake = null; 
+        static Spark motIntake = null; 
         Inputs input = null;
 
         public Intake(){
 
-            motIntake = new CANSparkMax(RobotMap.kCanId_motIntake,CANSparkMaxLowLevel.MotorType.kBrushless);
+            motIntake = new Spark(RobotMap.intake_0_PWN_0);
             motIntake.set(0.0);
 
         }
@@ -18,6 +18,13 @@
 
             if (input.intakeButton == true) {
                 motIntake.set(input.motIntakePower);
+            }
+            else{
+                motIntake.set(0.0);
+            }
+
+            if (input.intakeButtonInverse == true){
+                motIntake.set(-(input.motIntakePower));
             }
             else{
                 motIntake.set(0.0);
