@@ -17,41 +17,40 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 
 //import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Inputs {
     // Controller
+    private XboxController gamepadDriver = null;
     private XboxController gamepadOperator = null;
-    private XboxController gamepadOperator_2 = null;
     // private XboxController gamepadDriver = null;
     public Joystick joyTestController = null;
 
     // Motor Power
-    public static double dDriverPower = 0.0;
-    public static double dDriverTurn = 0.0;
-    public static boolean shooterButton = false;
-    public static double motShooterPower = -.74;
-    public boolean intakeButton = false;
-    public boolean intakeButtonInverse = false;
-    public double motIntakePower = .8;
-    public static double motClimbPower = -.74;
-    public static int climb_POV = 0;
-    public static boolean robotBaseInverseButton = false;
-    public static boolean PneunamticsRightButton = false;
-    public static boolean PneunamticsLeftButton = false;
+    public double dDriverPower = 0.0;
+    public double dDriverTurn = 0.0;
+    public double motShooterPower = 0.0;
+    public double motIntakePower = 0.0;
+    public double motClimbPower = 0;
+    public boolean robotBaseInverseButton = false;
+    public boolean PneunamticsRightButton = false;
+    public boolean PneunamticsLeftButton = false;
+    public double shooterButton = 0.0;
+    public double indexButton = 0.0;
+    public double motIndexPower = 0.0;
+    public boolean intake_air = false;
+    public boolean climb_air = false;
 
-    //What is the end game
-    public boolean bInEndGame  = false;
+    public boolean shifter = false;
+
+
+    // What is the end game
+    public boolean bInEndGame = false;
     public boolean bSpeed = false;
 
-    private Drivetrain drivetrain = new Drivetrain();
 
     public Inputs() {
         joyTestController = new Joystick(RobotMap.kUSBPort_TestJoyStick);
-        // gamepadDriver = new XboxController(RobotMap.kUSBPort_DriverControl );
+        gamepadDriver = new XboxController(RobotMap.kUSBPort_DriverControl);
         gamepadOperator = new XboxController(RobotMap.kUSBPort_OperatorControl);
-        gamepadOperator_2 = new XboxController(RobotMap.kUSBPort_OperatorControl_2);
-        
 
         zeroInputs(); // this will init many variables
     }
@@ -61,30 +60,66 @@ public class Inputs {
         // iGyroRequest = Gyro.kGyro_Assist;
         // }
         // I need to read up on what this does
-        shooterButton = gamepadOperator_2.getXButton();
-        intakeButton = gamepadOperator_2.getAButton();
-        intakeButtonInverse = gamepadOperator_2.getBButton();
-        climb_POV = gamepadOperator.getPOV();
-        
+        shooterButton = gamepadOperator.getLeftTriggerAxis();
+        indexButton = gamepadOperator.getRightTriggerAxis();
 
-        dDriverPower = gamepadOperator.getRightY();
-        dDriverTurn = gamepadOperator.getLeftX(); 
-        robotBaseInverseButton = gamepadOperator.getBButton();
+        //Intake
+        if (gamepadOperator.getXButton()) {
+            motIntakePower = -0.75;
+        } else if (gamepadOperator.getBButton()) {
+            motIntakePower = 0.75;
+        } else {
+            motIntakePower = 0;
+        }
+
+        if (gamepadOperator.getPOV() == 180) {
+            motClimbPower = 1;
+        }
+        else if (gamepadOperator.getPOV() == 0) {
+            motClimbPower = -1;
+        }
+        else {
+            motClimbPower = 0;
+        }
+
+        if(indexButton != 0.0){
+            motIndexPower = indexButton * Math.abs(indexButton * indexButton * indexButton);
+        } else{
+            motIndexPower = 0.0;
+        }
+
+        if (shooterButton !=0.0) {
+            motShooterPower = -.86;
+        }
+        else{
+            motShooterPower = 0.0;
+
+        shifter = gamepadDriver.getRightBumper();
+
+        if (gamepadOperator.getPOV() == 90){
+            climb_air = true;
+        }
+        else if(gamepadOperator.getPOV() == 270){
+            climb_air = false;
+
+        }
+        if (PneunamticsLeftButton == true){
+            intake_air = false;
+        }
+        else if(PneunamticsRightButton == true){
+            intake_air = true;
+        }
+
+
         PneunamticsLeftButton = gamepadOperator.getLeftBumper();
-        PneunamticsRightButton = gamepadOperator.getRightBumper(); 
+        PneunamticsRightButton = gamepadOperator.getRightBumper();
 
+        dDriverPower = gamepadDriver.getRightY();
+        dDriverTurn = gamepadDriver.getLeftX();
+        robotBaseInverseButton = gamepadDriver.getBButton();
 
-
-
-        // else if (joystickDegrees == 270) {
-        // dLeftDriveMotorPower = -0.5;
-        // dRightDriveMotorPower = -0.5;
-        // } else if (joystickDegrees == 360) {
-        // dLeftDriveMotorPower = 0.5;
-        // dRightDriveMotorPower = -0.5;
-        // }
+        }
     }
-
     public void zeroInputs() { // reset all variables to stop or off state
     }
 }

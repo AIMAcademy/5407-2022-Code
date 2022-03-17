@@ -5,14 +5,13 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Pneumatics;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,10 +26,11 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   Inputs inputs = null;
   RobotBase robotBase = null;
-  Shooter shooter = null;
-  Intake intake = null;
-  RobotClimb climb = null;
   Timer timer = null;
+  static Spark motIntake = null;
+  static Spark motIndex = null;
+  static CANSparkMax motShooter = null; 
+
 
 
   /**
@@ -44,10 +44,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    robotBase = new RobotBase();
-    shooter = new Shooter();
-    intake = new Intake();
-    climb = new RobotClimb();
+    robotBase = new RobotBase(inputs);
 
   }
 
@@ -85,25 +82,36 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     double time = Timer.getFPGATimestamp();
     if (time - startTime < 2){
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, -0.8);
+      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, -0.8);
+      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, -0.8);
+      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.8);
+      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.8);
+      motIntake.set(0.7);
+
     } else if( time - startTime < 3){
       RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
       RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
       RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
       RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-    }else if(time-startTime < 5){
-      Shooter.motShooter.set(-0.74);
-    } else if (time - startTime< 7){
-      Shooter.motShooter.set(0.0);
-    }else if(time-startTime < 11) {
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.8);
+      motIntake.set(0);
+    }else if(time-startTime < 7){
+      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.8);
+      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.8);
+      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, -0.8);
+      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, -0.8);
+    } else if (time - startTime< 8){
+      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
+      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
+      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
+      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.0);
+      motIntake.set(0.8);
+      motIndex.set(0.8);
+      motShooter.set(.8);
+
     } else{
+      motIntake.set(0);
+      motIndex.set(0);
+      motShooter.set(0);
       RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
       RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
       RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
@@ -115,7 +123,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    Pneumatics.comp.enabled(); 
   }
 
   /** This function is called periodically during operator control. */
@@ -123,18 +130,12 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     inputs.readValues();
     robotBase.update();
-    shooter.update();
-    //climb.update();
-    //intake.update();
-
-
   }
   
 
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
-    Pneumatics.comp.disable();
   }
 
   /** This function is called periodically when disabled. */

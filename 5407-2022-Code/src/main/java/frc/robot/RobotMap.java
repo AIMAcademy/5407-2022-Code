@@ -1,8 +1,14 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 class RobotMap {
 
-    public final static int kCANId_PCM = 0;   
+    public final static int kCANId_PCM = 0;  
+    public final static PneumaticsModuleType kPCM_TYPE = PneumaticsModuleType.CTREPCM;   
+    public final static PneumaticsModuleType kPCM_TYPE_climb = PneumaticsModuleType.CTREPCM;   
+    public final static PneumaticsModuleType kPCM_TYPE_intake = PneumaticsModuleType.CTREPCM;   
+ 
 
     //Drive train motors
     public final static int kTalonId_RightDriveMotorA = 1;
@@ -16,10 +22,11 @@ class RobotMap {
     //USB Ports
     public final static int kUSBPort_DriverControl = 0; 
     public final static int kUSBPort_OperatorControl = 1;
-    public final static int kUSBPort_OperatorControl_2 = 2;
     public final static int kUSBPort_TestJoyStick = 3;
 
-    public static final int intake_0_PWN_0 = 0;
-    public static final int climb_PMW_2 = 2;
+    public static final int intakePWN = 0;
+    public static final int indexPWN = 1;
+
+    public static final int climbPMW = 2;
 
 }
