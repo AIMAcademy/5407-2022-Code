@@ -33,8 +33,7 @@ public class RobotBase {
     static Spark motIntake = null;
     static Spark motIndex = null;
     static Spark motClimb = null;
-    static CANSparkMax motShooter = null; 
-
+    static CANSparkMax motShooter = null;
 
     boolean isNotPressed = true;
 
@@ -45,8 +44,7 @@ public class RobotBase {
         motIntake = new Spark(RobotMap.intakePWN);
         motClimb = new Spark(RobotMap.climbPMW);
         motIndex = new Spark(RobotMap.indexPWN);
-        motShooter = new CANSparkMax(RobotMap.kCANId_motShooter,CANSparkMaxLowLevel.MotorType.kBrushless);
-
+        motShooter = new CANSparkMax(RobotMap.kCANId_motShooter, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         motClimb.set(0.0);
         motIntake.set(0.0);
@@ -74,22 +72,19 @@ public class RobotBase {
             mCompressor.enabled();
         }
 
-
         solShifter = new Solenoid(RobotMap.kPCM_TYPE, 0);
         solClimb = new Solenoid(RobotMap.kPCM_TYPE_climb, 1);
         solIntake = new Solenoid(RobotMap.kPCM_TYPE_intake, 2);
-
 
     }
 
     public void update() {
         double temp_drive_straight = 0;
-        temp_drive_straight = inputs.dDriverPower * Math.abs(inputs.dDriverPower * inputs.dDriverPower * inputs.dDriverPower);
+        double temp_drive_turn = 0;
+        temp_drive_straight = inputs.dDriverPower
+                * Math.abs(inputs.dDriverPower * inputs.dDriverPower * inputs.dDriverPower);
+        temp_drive_turn = inputs.dDriverTurn * Math.abs(inputs.dDriverTurn);
 
-        dLeftDrivePower = applyPower.getWheelPower(ApplyPower.k_iLeftRearDrive, temp_drive_straight,
-                inputs.dDriverTurn);
-        dRightDrivePower = applyPower.getWheelPower(ApplyPower.k_iRightRearDrive, temp_drive_straight,
-                inputs.dDriverTurn);
         if (inputs.robotBaseInverseButton == true && isNotPressed == true) {
             isNotPressed = false;
             inverseTimes += 1;
@@ -100,18 +95,26 @@ public class RobotBase {
         }
 
         if (inverseTimes % 2 == 0) {
+            dLeftDrivePower = applyPower.getWheelPower(ApplyPower.k_iLeftRearDrive, temp_drive_straight,
+                    temp_drive_turn);
+            dRightDrivePower = applyPower.getWheelPower(ApplyPower.k_iRightRearDrive, temp_drive_straight,
+                    temp_drive_turn);
             motLeftDriveMotorA.set(ControlMode.PercentOutput, dLeftDrivePower);
             motLeftDriveMotorB.set(ControlMode.PercentOutput, dLeftDrivePower);
             motRightDriveMotorA.set(ControlMode.PercentOutput, -dRightDrivePower);
             motRightDriveMotorB.set(ControlMode.PercentOutput, -dRightDrivePower);
-            inputs.dDriverTurn*=-1;
+            // inputs.dDriverTurn *= -1;
 
         } else {
+            dLeftDrivePower = applyPower.getWheelPower(ApplyPower.k_iLeftRearDrive, temp_drive_straight,
+                    -temp_drive_turn);
+            dRightDrivePower = applyPower.getWheelPower(ApplyPower.k_iRightRearDrive, temp_drive_straight,
+                    -temp_drive_turn);
             motLeftDriveMotorA.set(ControlMode.PercentOutput, -dLeftDrivePower);
             motLeftDriveMotorB.set(ControlMode.PercentOutput, -dLeftDrivePower);
             motRightDriveMotorA.set(ControlMode.PercentOutput, dRightDrivePower);
             motRightDriveMotorB.set(ControlMode.PercentOutput, dRightDrivePower);
-            inputs.dDriverTurn*=-1;
+            // inputs.dDriverTurn *= -1;
         }
 
         motIntake.set(inputs.motIntakePower);

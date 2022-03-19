@@ -4,19 +4,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**********************************************************************
- * Inputs Class -- This is used to collect all human input or what is considered input for the robot.
- *<p>
- *Here we will document how the joysticks accept the human input
+ * Inputs Class -- This is used to collect all human input or what is considered
+ * input for the robot.
+ * <p>
+ * Here we will document how the joysticks accept the human input
  *
  * <pre>
  *     Source     Range     Usage
  * 
  * Driver Turn     Axis     -1 to 1
  * 
- * </pre>  
+ * </pre>
  */
 
-//import edu.wpi.first.wpilibj.GenericHID.Hand;
+// import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class Inputs {
     // Controller
     private XboxController gamepadDriver = null;
@@ -41,11 +42,9 @@ public class Inputs {
 
     public boolean shifter = false;
 
-
     // What is the end game
     public boolean bInEndGame = false;
     public boolean bSpeed = false;
-
 
     public Inputs() {
         joyTestController = new Joystick(RobotMap.kUSBPort_TestJoyStick);
@@ -62,8 +61,12 @@ public class Inputs {
         // I need to read up on what this does
         shooterButton = gamepadOperator.getLeftTriggerAxis();
         indexButton = gamepadOperator.getRightTriggerAxis();
+        if (gamepadOperator.getYButton()) {
 
-        //Intake
+            indexButton = -.5;
+        }
+
+        // Intake
         if (gamepadOperator.getXButton()) {
             motIntakePower = -0.75;
         } else if (gamepadOperator.getBButton()) {
@@ -74,52 +77,46 @@ public class Inputs {
 
         if (gamepadOperator.getPOV() == 180) {
             motClimbPower = 1;
-        }
-        else if (gamepadOperator.getPOV() == 0) {
+        } else if (gamepadOperator.getPOV() == 0) {
             motClimbPower = -1;
-        }
-        else {
+        } else {
             motClimbPower = 0;
         }
 
-        if(indexButton != 0.0){
+        if (indexButton != 0.0) {
             motIndexPower = indexButton * Math.abs(indexButton * indexButton * indexButton);
-        } else{
+        } else {
             motIndexPower = 0.0;
         }
 
-        if (shooterButton !=0.0) {
+        if (shooterButton >= 0.1) {
             motShooterPower = -.86;
-        }
-        else{
+        } else {
             motShooterPower = 0.0;
-
-        shifter = gamepadDriver.getRightBumper();
-
-        if (gamepadOperator.getPOV() == 90){
-            climb_air = true;
         }
-        else if(gamepadOperator.getPOV() == 270){
+        shifter = gamepadDriver.getLeftBumper();
+
+        if (gamepadOperator.getPOV() == 90) {
+            climb_air = true;
+        } else if (gamepadOperator.getPOV() == 270) {
             climb_air = false;
 
         }
-        if (PneunamticsLeftButton == true){
+        if (PneunamticsLeftButton == true) {
             intake_air = false;
-        }
-        else if(PneunamticsRightButton == true){
+        } else if (PneunamticsRightButton == true) {
             intake_air = true;
         }
-
 
         PneunamticsLeftButton = gamepadOperator.getLeftBumper();
         PneunamticsRightButton = gamepadOperator.getRightBumper();
 
         dDriverPower = gamepadDriver.getRightY();
         dDriverTurn = gamepadDriver.getLeftX();
-        robotBaseInverseButton = gamepadDriver.getBButton();
+        robotBaseInverseButton = gamepadDriver.getRightBumper();
 
-        }
     }
+
     public void zeroInputs() { // reset all variables to stop or off state
     }
 }
