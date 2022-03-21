@@ -8,7 +8,7 @@ class RobotMap {
     public final static PneumaticsModuleType kPCM_TYPE = PneumaticsModuleType.CTREPCM;   
     public final static PneumaticsModuleType kPCM_TYPE_climb = PneumaticsModuleType.CTREPCM;   
     public final static PneumaticsModuleType kPCM_TYPE_intake = PneumaticsModuleType.CTREPCM;   
- 
+    public final static PneumaticsModuleType kPCM_TYPE_climbRelease = PneumaticsModuleType.CTREPCM;   
 
     //Drive train motors
     public final static int kTalonId_RightDriveMotorA = 1;

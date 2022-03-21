@@ -39,6 +39,7 @@ public class Inputs {
     public double motIndexPower = 0.0;
     public boolean intake_air = false;
     public boolean climb_air = false;
+    public boolean climb_up = false;
 
     public boolean shifter = false;
 
@@ -61,9 +62,9 @@ public class Inputs {
         // I need to read up on what this does
         shooterButton = gamepadOperator.getLeftTriggerAxis();
         indexButton = gamepadOperator.getRightTriggerAxis();
-        if (gamepadOperator.getYButton()) {
 
-            indexButton = -.5;
+        if (gamepadDriver.getAButtonPressed()) {
+            climb_up = true;
         }
 
         // Intake
@@ -84,7 +85,10 @@ public class Inputs {
         }
 
         if (indexButton != 0.0) {
-            motIndexPower = indexButton * Math.abs(indexButton * indexButton * indexButton);
+            motIndexPower = 1;
+        } else if (gamepadOperator.getYButton()) {
+            motIndexPower = -1;
+        
         } else {
             motIndexPower = 0.0;
         }

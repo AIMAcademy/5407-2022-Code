@@ -20,7 +20,8 @@ public class RobotBase {
     Compressor mCompressor = null;
     Solenoid solShifter = null;
     Solenoid solClimb = null;
-    Solenoid solIntake = null;
+    static Solenoid solIntake = null;
+    Solenoid solClimbRelease = null;
 
     int inverseTimes = 2;
 
@@ -75,6 +76,7 @@ public class RobotBase {
         solShifter = new Solenoid(RobotMap.kPCM_TYPE, 0);
         solClimb = new Solenoid(RobotMap.kPCM_TYPE_climb, 1);
         solIntake = new Solenoid(RobotMap.kPCM_TYPE_intake, 2);
+        solClimbRelease = new Solenoid(RobotMap.kPCM_TYPE_climbRelease, 3);
 
     }
 
@@ -124,5 +126,6 @@ public class RobotBase {
         solClimb.set(inputs.climb_air);
         solIntake.set(inputs.intake_air);
         motShooter.set(inputs.motShooterPower);
+        solClimbRelease.set(inputs.climb_up);
     }
 }

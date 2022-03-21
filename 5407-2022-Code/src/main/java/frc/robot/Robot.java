@@ -80,44 +80,31 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+
     double time = Timer.getFPGATimestamp();
-    if (time - startTime < 2){
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.8);
-      motIntake.set(0.7);
+    if (time - startTime < 3){
+        RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, -0.8);
+        RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, -0.8);
+        RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.8);
+        RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.8);
+        RobotBase.solIntake.set(true);
+    } else if (time - startTime < 4) {
 
-    } else if( time - startTime < 3){
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-      motIntake.set(0);
-    }else if(time-startTime < 7){
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.8);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, -0.8);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, -0.8);
-    } else if (time - startTime< 8){
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-      motIntake.set(0.8);
-      motIndex.set(0.8);
-      motShooter.set(.8);
+        RobotBase.motIntake.set(1);
+    } else if (time - startTime < 7) {
+        RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, -0.8);
+        RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, -0.8);
+        RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.8);
+        RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.8);
+        RobotBase.motShooter.set(.75);
+    } else if (time - startTime < 10){
 
-    } else{
-      motIntake.set(0);
-      motIndex.set(0);
-      motShooter.set(0);
-      RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0.0);
-      RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0.0);
+        RobotBase.motLeftDriveMotorA.set(ControlMode.PercentOutput, 0);
+        RobotBase.motLeftDriveMotorB.set(ControlMode.PercentOutput, 0);
+        RobotBase.motRightDriveMotorA.set(ControlMode.PercentOutput, 0);
+        RobotBase.motRightDriveMotorB.set(ControlMode.PercentOutput, 0);
+        RobotBase.motIndex.set(1);
     }
-
   }
 
   /** This function is called once when teleop is enabled. */
